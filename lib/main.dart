@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_ui/HomePage.dart';
+import 'package:netflix_ui/Loading_Screen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: LoadingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

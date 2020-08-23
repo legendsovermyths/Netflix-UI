@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  final data;
+  HomePage({this.data});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  String url="https://image.tmdb.org/t/p/original/";
   PageController _pageController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.data['results'][2]['title']);
     _pageController=PageController(initialPage: 1,viewportFraction:0.8);
   }
   _movieSelector(int index){
@@ -20,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         double value=1;
         if(_pageController.position.haveDimensions){
           value=_pageController.page -index;
-          value=(1-value.abs()*0.3+0.6).clamp(0,1);
+          value=(1-(value.abs()*0.3)+0.06).clamp(0.0,1.0);
         }
         return Center(child: SizedBox(height: Curves.easeInOut.transform(value)*270.0,
         width: Curves.easeInOut.transform(value)*400,
@@ -43,11 +47,11 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Center(
                 child:Hero(
-                  tag: movies[index].imageurl,
+                  tag: widget.data["results"][index]["backdrop_path"],
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image(
-                      image:AssetImage(movies[index].imageUrl),
+                      image:NetworkImage(url+widget.data["results"][index]["backdrop_path"]),
                       height:220.0,
                       fit:BoxFit.cover
                     ),
@@ -62,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: 250.0,
               child: Text(
-                movies[index].title.toUpperCase(),
+                widget.data["results"][index]['title']!=null?widget.data["results"][index]['title'].toUpperCase():widget.data["results"][index]['name'].toUpperCase(),
                 style: TextStyle(color: Colors.white, fontSize: 20.0 ,fontWeight: FontWeight.bold),
               ),
             ),
@@ -107,7 +111,7 @@ class _HomePageState extends State<HomePage> {
           width: double.infinity,
           child: PageView.builder(
             controller:_pageController,
-            itemCount: movies.length,
+            itemCount: widget.data["results"].length,
             itemBuilder: (BuildContext context, int index){
               return _movieSelector(index);
             },
