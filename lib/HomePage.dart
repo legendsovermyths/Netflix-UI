@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_ui/MovieScreen.dart';
+import 'ContentScroll.dart';
 
 class HomePage extends StatefulWidget {
   final data;
-  HomePage({this.data});
+  final listImages;
+  HomePage({this.data, this.listImages});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -43,51 +46,57 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    offset: Offset(0.0, 0.4),
-                    blurRadius: 10.0,
-                  )
-                ],
-              ),
-              child: Center(
-                  child: Hero(
-                tag: widget.data["results"][index]["backdrop_path"],
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image(
-                      image: NetworkImage(
-                          url + widget.data["results"][index]["backdrop_path"]),
-                      height: 220.0,
-                      fit: BoxFit.cover),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => MovieScreen(movie: widget.data['results'][index])));
+        },
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      offset: Offset(0.0, 0.4),
+                      blurRadius: 10.0,
+                    )
+                  ],
                 ),
-              )),
-            ),
-          ),
-          Positioned(
-            left: 30.0,
-            bottom: 40.0,
-            child: Container(
-              width: 250.0,
-              child: Text(
-                widget.data["results"][index]['title'] != null
-                    ? widget.data["results"][index]['title'].toUpperCase()
-                    : widget.data["results"][index]['name'].toUpperCase(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+                child: Center(
+                    child: Hero(
+                  tag: widget.data["results"][index]["backdrop_path"],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image(
+                        image: NetworkImage(url +
+                            widget.data["results"][index]["backdrop_path"]),
+                        height: 220.0,
+                        fit: BoxFit.cover),
+                  ),
+                )),
               ),
             ),
-          )
-        ],
+            Positioned(
+              left: 30.0,
+              bottom: 40.0,
+              child: Container(
+                width: 250.0,
+                child: Text(
+                  widget.data["results"][index]['title'] != null
+                      ? widget.data["results"][index]['title'].toUpperCase()
+                      : widget.data["results"][index]['name'].toUpperCase(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -160,19 +169,25 @@ class _HomePageState extends State<HomePage> {
                           )
                         ]),
                     child: Center(
-                      child: Text(labels[index].toUpperCase(),
-                      style:TextStyle(
-                        color: Colors.white,
-                        fontSize:16.0,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.8,
-                      )
-                      )
-                    ));
+                        child: Text(labels[index].toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.8,
+                            ))));
               },
             ),
           ),
-          SizedBox(height: 20,)
+          SizedBox(
+            height: 20,
+          ),
+          ContentScroll(
+            images: widget.listImages,
+            imageHeight: 250,
+            imageWidth: 150,
+            title: "My List",
+          ),
         ],
       ),
     );

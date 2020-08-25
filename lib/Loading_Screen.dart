@@ -12,8 +12,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getData() async{
     Model model = Model();
     var data = await model.getNetflixOriginals();
+    var listImages= await model.getTrending();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomePage(data: data);
+      return HomePage(data: data,listImages: listImages,);
     }));
   }
 

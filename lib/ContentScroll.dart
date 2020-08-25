@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ContentScroll extends StatelessWidget {
-  final List<String> images;
+  final images;
   final String title;
   final double imageHeight;
   final double imageWidth;
   ContentScroll({this.title, this.imageHeight, this.images, this.imageWidth});
-
+  String baseUrl="https://image.tmdb.org/t/p/original/";
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,7 +35,7 @@ class ContentScroll extends StatelessWidget {
           child: ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 30),
             scrollDirection: Axis.horizontal,
-            itemCount: images.length,
+            itemCount: images['results'].length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
@@ -52,7 +52,7 @@ class ContentScroll extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image(
-                    image: NetworkImage(""),
+                    image: NetworkImage(baseUrl+images['results'][index]['poster_path']),
                     fit: BoxFit.cover,
                   ),
                 ),
