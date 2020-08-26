@@ -21,17 +21,17 @@ class _MovieScreenState extends State<MovieScreen> {
     // TODO: implement initState
     super.initState();
     for (var i = 0; i < 16; i++) {
-      print(widget.movie);
 
       var genre1 = widget.genres['genres'][i]["id"];
       for (var j = 0; j < widget.movie["genre_ids"].length; j++) {
         var genre2 = widget.movie["genre_ids"][j];
         if (genre1 == genre2) {
           genres.add(widget.genres['genres'][i]["name"]);
+          print(widget.movie["origin_country"]);
         }
       }
 
-      print(genres);
+
     }
   }
 
@@ -145,7 +145,85 @@ class _MovieScreenState extends State<MovieScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 15.0,)
+                SizedBox(
+                  height: 15.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Popularity",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2.0,
+                        ),
+                        Text(
+                          widget.movie["popularity"].toInt().toString(),
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Rating",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2.0,
+                        ),
+                        Text(
+                          widget.movie["vote_average"].toString(),
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "Origin",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2.0,
+                        ),
+                        Text(
+                          widget.movie["origin_country"].toString().substring(1,3),
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(height: 25.0,),
+                Container(
+                  height: 120.0,
+                  child: SingleChildScrollView(
+                    child: Text(
+                      widget.movie['overview'],
+                      style:TextStyle(
+                        fontSize: 15,
+                        color: Colors.black54,
+
+                      )
+                    ),
+                  ),
+                )
               ],
             ),
           )
