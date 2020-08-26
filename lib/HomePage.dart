@@ -3,9 +3,10 @@ import 'package:netflix_ui/MovieScreen.dart';
 import 'ContentScroll.dart';
 
 class HomePage extends StatefulWidget {
+  final genres;
   final data;
   final listImages;
-  HomePage({this.data, this.listImages});
+  HomePage({this.data, this.listImages,this.genres});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (_) => MovieScreen(movie: widget.data['results'][index])));
+              MaterialPageRoute(builder: (_) => MovieScreen(movie: widget.data['results'][index],genres: widget.genres)));
         },
         child: Stack(
           children: <Widget>[

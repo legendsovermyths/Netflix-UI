@@ -5,13 +5,36 @@ import 'CircularClipper.dart';
 
 class MovieScreen extends StatefulWidget {
   final movie;
-  MovieScreen({this.movie});
+  final genres;
+
+  MovieScreen({this.movie, this.genres});
+
   @override
   _MovieScreenState createState() => _MovieScreenState();
 }
 
 class _MovieScreenState extends State<MovieScreen> {
+  List<String> genres = [];
   String url = "https://image.tmdb.org/t/p/original/";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (var i = 0; i < 16; i++) {
+      print(widget.movie);
+
+      var genre1 = widget.genres['genres'][i]["id"];
+      for (var j = 0; j < widget.movie["genre_ids"].length; j++) {
+        var genre2 = widget.movie["genre_ids"][j];
+        if (genre1 == genre2) {
+          genres.add(widget.genres['genres'][i]["name"]);
+        }
+      }
+
+      print(genres);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +79,6 @@ class _MovieScreenState extends State<MovieScreen> {
                     icon: Icon(Icons.favorite_border),
                     color: Colors.black,
                   ),
-
                 ],
               ),
               Positioned.fill(
@@ -114,7 +136,16 @@ class _MovieScreenState extends State<MovieScreen> {
                 ),
                 SizedBox(
                   height: 10.0,
-                )
+                ),
+                Text(
+                  genres.toString().substring(1, genres.toString().length - 1),
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 15.0,)
               ],
             ),
           )
