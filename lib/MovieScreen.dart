@@ -27,7 +27,6 @@ class _MovieScreenState extends State<MovieScreen> {
         var genre2 = widget.movie["genre_ids"][j];
         if (genre1 == genre2) {
           genres.add(widget.genres['genres'][i]["name"]);
-          print(widget.movie["origin_country"]);
         }
       }
 

@@ -6,7 +6,8 @@ class HomePage extends StatefulWidget {
   final genres;
   final data;
   final listImages;
-  HomePage({this.data, this.listImages,this.genres});
+  final listImages2;
+  HomePage({this.data, this.listImages,this.genres,this.listImages2});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -188,6 +189,12 @@ class _HomePageState extends State<HomePage> {
             imageHeight: 250,
             imageWidth: 150,
             title: "My List",
+          ),
+          ContentScroll(
+            images: widget.listImages2,
+            imageHeight: 250,
+            imageWidth: 150,
+            title: "Trending",
           ),
         ],
       ),

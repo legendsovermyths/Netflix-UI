@@ -12,10 +12,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getData() async{
     Model model = Model();
     var data = await model.getNetflixOriginals();
-    var listImages= await model.getTrending();
+    var listImages= await model.getRomanceMovies();
+    var listImages2=await model.getTrending();
     var genres=await model.getGenres();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomePage(data: data,listImages: listImages,genres: genres);
+      return HomePage(data: data,listImages: listImages,genres: genres,listImages2:listImages2);
     }));
   }
 
@@ -28,6 +29,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image(
+          alignment: Alignment.center,
+          height: 110,
+          image: AssetImage('images/netflix_logo.png'),
+      ),
+          SpinKitDualRing(
+            size: 30,
+            color: Colors.red,
+          )
+        ],
+      ));
   }
 }
