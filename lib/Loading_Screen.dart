@@ -42,6 +42,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
           SpinKitDualRing(
             size: 30,
             color: Colors.red,
+          ),
+          SizedBox(
+            height: 400,
+          ),
+          Text(
+            "Concept By Anirudh Singh"
           )
         ],
       ));
