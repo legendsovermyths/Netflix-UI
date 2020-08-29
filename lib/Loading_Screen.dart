@@ -14,9 +14,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var data = await model.getNetflixOriginals();
     var listImages= await model.getRomanceMovies();
     var listImages2=await model.getTrending();
+    var listMovies=await model.getTrending();
     var genres=await model.getGenres();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomePage(data: data,listImages: listImages,genres: genres,listImages2:listImages2);
+      return HomePage(data: data,listImages: listImages,genres: genres,listImages2:listImages2,listMovies:listMovies);
     }));
   }
 

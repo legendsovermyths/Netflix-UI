@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_ui/MovieScreen.dart';
+import 'package:netflix_ui/SearchScreen.dart';
 import 'ContentScroll.dart';
 
 class HomePage extends StatefulWidget {
+  final listMovies;
   final genres;
   final data;
   final listImages;
   final listImages2;
-  HomePage({this.data, this.listImages,this.genres,this.listImages2});
+  HomePage({this.data, this.listImages,this.genres,this.listImages2,this.listMovies});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -125,7 +127,12 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             padding: EdgeInsets.only(right: 30.0),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchScreen(genres:widget.genres,movies: widget.listMovies,)),
+              );
+            },
             icon: Icon(Icons.search),
             color: Colors.black,
           )
