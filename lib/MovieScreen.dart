@@ -67,11 +67,7 @@ class _MovieScreenState extends State<MovieScreen> {
                     icon: Icon(Icons.arrow_back),
                     color: Colors.black,
                   ),
-                  Image(
-                    image: AssetImage('images/netflix_logo.png'),
-                    height: 60,
-                    width: 150,
-                  ),
+
                   IconButton(
                     padding: EdgeInsets.only(left: 30.0),
                     onPressed: () => print("add to favourites"),

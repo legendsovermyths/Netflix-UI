@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_ui/MovieScreen.dart';
+import 'DataModel.dart';
 
 class SearchScreen extends StatefulWidget {
   final movies;
@@ -10,7 +11,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  
+  var tag=0;
+  String query;
+  var moviesData;
+  void updateUI(data){
+    setState(() {
+      moviesData=data;
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateUI(widget.movies);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +45,16 @@ class _SearchScreenState extends State<SearchScreen> {
               focusColor: Colors.white,
               border: OutlineInputBorder(borderSide: BorderSide.none),
             ),
-            onEditingComplete: () {
-              print("Hi Anirudh!");
+            onChanged: (value){
+              value=value.replaceAll(new RegExp(r' '), '/');
+              query=value;
+              print(query);
+            },
+            onEditingComplete: () async{
+              Model model=Model(query: query);
+              var data=await model.getSearchedMovies();
+              print(data);
+              updateUI(data);
             },
             keyboardAppearance: Brightness.light,
           ),
@@ -41,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 scrollDirection: Axis.vertical,
-                itemCount: widget.movies["results"].length,
+                itemCount: moviesData["results"].length,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
                     children: <Widget>[
@@ -60,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   )
                                 ]),
                             child: Hero(
-                              tag:widget.movies["results"][index]['backdrop_path'],
+                              tag:moviesData["results"][index]['backdrop_path']!=null?moviesData["results"][index]['backdrop_path']:tag++,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: GestureDetector(
@@ -68,12 +90,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MovieScreen(movie: widget.movies['results'][index],genres: widget.genres,)),
+                                          builder: (context) => MovieScreen(movie: moviesData['results'][index],genres: widget.genres,)),
                                     );
                                   },
                                   child: Image(
                                     image: NetworkImage(
-                                        "https://image.tmdb.org/t/p/original"+widget.movies["results"][index]['poster_path']),
+                                        "https://image.tmdb.org/t/p/original"+(moviesData["results"][index]['poster_path']!=null?moviesData["results"][index]['poster_path']:"")),
                                     height: 150,
                                     width: 100,
                                     fit: BoxFit.cover,
@@ -85,31 +107,34 @@ class _SearchScreenState extends State<SearchScreen> {
                           SizedBox(
                             width: 35,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                  widget.movies["results"][index]['title'] != null
-                  ? widget.movies["results"][index]['title'].toUpperCase()
-                      : widget.movies["results"][index]['name'].toUpperCase(),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                  moviesData["results"][index]['title'] != null
+                  ? moviesData["results"][index]['title'].toUpperCase()
+                      : moviesData["results"][index]['name'].toUpperCase(),
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                               "Rating: "+ widget.movies["results"][index]['vote_average'].toString(),
-                                style: TextStyle(
-                                  wordSpacing: 4,
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
+                                  ),
+                                SizedBox(
+                                  height: 12,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                 "Rating: "+ moviesData["results"][index]['vote_average'].toString(),
+                                  style: TextStyle(
+                                    wordSpacing: 4,
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
