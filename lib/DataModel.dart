@@ -67,5 +67,11 @@ class Model{
     var data=await networking2.getdata();
     return data;
   }
+  Future<dynamic> getSearchedTV () async{
+    String url="https://api.themoviedb.org/3/search/tv?api_key=$API&language=en-US&page=1&include_adult=false&query=$query";
+    Networking networking2=Networking(url: url);
+    var data=await networking2.getdata();
+    return data;
+  }
 
 }

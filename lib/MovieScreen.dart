@@ -14,6 +14,7 @@ class MovieScreen extends StatefulWidget {
 }
 
 class _MovieScreenState extends State<MovieScreen> {
+  var tag=0;
   List<String> genres = [];
   String url = "https://image.tmdb.org/t/p/original/";
   @override
@@ -45,7 +46,7 @@ class _MovieScreenState extends State<MovieScreen> {
               Container(
                 transform: Matrix4.translationValues(0.0, -50.0, 0.0),
                 child: Hero(
-                  tag: widget.movie["backdrop_path"],
+                  tag: widget.movie["backdrop_path"]!=null?widget.movie["backdrop_path"]:tag++,
                   child: ClipShadowPath(
                       clipper: CircularClipper(),
                       shadow: Shadow(blurRadius: 20.0),
@@ -53,7 +54,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         height: 400,
                         width: double.infinity,
                         image:
-                            NetworkImage(url + widget.movie['backdrop_path']),
+                            NetworkImage(url +( widget.movie['backdrop_path']!=null?widget.movie['backdrop_path']:"")),
                         fit: BoxFit.cover,
                       )),
                 ),

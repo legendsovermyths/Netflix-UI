@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoadingScreen(),
+      home: DefaultTabController(
+          length: 2,
+          child: LoadingScreen()),
       debugShowCheckedModeBanner: false,
     );
   }
