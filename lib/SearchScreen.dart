@@ -6,38 +6,42 @@ import 'DataModel.dart';
 class SearchScreen extends StatefulWidget {
   final movies;
   final genres;
-  SearchScreen({this.genres,this.movies});
+  SearchScreen({this.genres, this.movies});
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  var tag=0;
+  var tag = 0;
   String query;
   var moviesData;
   var tvData;
-  void updateUI(data){
+  void updateUI(data) {
     setState(() {
-      moviesData=data;
-      tvData=data;
+      moviesData = data;
+      tvData = data;
     });
   }
-  void updateUIforMovies(data){
+
+  void updateUIforMovies(data) {
     setState(() {
-      moviesData=data;
+      moviesData = data;
     });
   }
-  void updateUIforTV(data){
+
+  void updateUIforTV(data) {
     setState(() {
-      tvData=data;
+      tvData = data;
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     updateUI(widget.movies);
   }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -45,14 +49,19 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            leading: Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
+           actions: <Widget>[
+             IconButton(
+               icon: Icon(Icons.search),
+               onPressed: (){},
+               color: Colors.grey,
+             )
+           ],
+
+            centerTitle: false,
             elevation: 0,
             backgroundColor: Colors.white,
-            title: TextField(
-              
+            title:
+            TextField(
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
@@ -61,18 +70,23 @@ class _SearchScreenState extends State<SearchScreen> {
                 focusColor: Colors.white,
                 border: OutlineInputBorder(borderSide: BorderSide.none),
               ),
-              onChanged: (value){
-                value=value.replaceAll(new RegExp(r' '), '/');
-                query=value;
+              onChanged: (value) {
+                value = value.replaceAll(new RegExp(r' '), '/');
+                query = value;
                 print(query);
               },
-              onEditingComplete: () async{
-                Model model=Model(query: query);
-                var data=await model.getSearchedMovies();
-                var data_2=await model.getSearchedTV();
+              onEditingComplete: () async {
+                Model model = Model(query: query);
+                var data = await model.getSearchedMovies();
+                var data_2 = await model.getSearchedTV();
                 print(data);
                 updateUIforMovies(data);
                 updateUIforTV(data_2);
+                FocusScopeNode currentFocus = FocusScope.of(context);
+
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
               },
               keyboardAppearance: Brightness.light,
             ),
@@ -81,18 +95,29 @@ class _SearchScreenState extends State<SearchScreen> {
               tabs: <Widget>[
                 Column(
                   children: <Widget>[
-                    Text("Movies",style: TextStyle(color: Colors.black54,fontSize: 16),
+                    Text(
+                      "Movies",
+                      style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
-                    SizedBox(height: 10,)
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
                 ),
                 Column(
                   children: <Widget>[
-                    Text("TV/Web Series",style: TextStyle(fontSize: 16,color: Colors.black54,),),
-                    SizedBox(height: 10,)
+                    Text(
+                      "TV/Web Series",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
                 ),
-
               ],
             ),
           ),
@@ -121,7 +146,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                         )
                                       ]),
                                   child: Hero(
-                                    tag:moviesData["results"][index]['backdrop_path']!=null?moviesData["results"][index]['backdrop_path']:tag++,
+                                    tag: moviesData["results"][index]
+                                                ['backdrop_path'] !=
+                                            null
+                                        ? moviesData["results"][index]
+                                            ['backdrop_path']
+                                        : tag++,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: GestureDetector(
@@ -129,12 +159,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => MovieScreen(movie: moviesData['results'][index],genres: widget.genres,)),
+                                                builder: (context) =>
+                                                    MovieScreen(
+                                                      movie:
+                                                          moviesData['results']
+                                                              [index],
+                                                      genres: widget.genres,
+                                                    )),
                                           );
                                         },
                                         child: Image(
                                           image: NetworkImage(
-                                              "https://image.tmdb.org/t/p/original"+(moviesData["results"][index]['poster_path']!=null?moviesData["results"][index]['poster_path']:"")),
+                                              "https://image.tmdb.org/t/p/original" +
+                                                  (moviesData["results"][index]
+                                                              ['poster_path'] !=
+                                                          null
+                                                      ? moviesData["results"]
+                                                          [index]['poster_path']
+                                                      : "")),
                                           height: 150,
                                           width: 100,
                                           fit: BoxFit.cover,
@@ -148,23 +190,32 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                        moviesData["results"][index]['title'] != null
-                        ? moviesData["results"][index]['title'].toUpperCase()
-                            : moviesData["results"][index]['name'].toUpperCase(),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                        moviesData["results"][index]['title'] !=
+                                                null
+                                            ? moviesData["results"][index]
+                                                    ['title']
+                                                .toUpperCase()
+                                            : moviesData["results"][index]
+                                                    ['name']
+                                                .toUpperCase(),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                      ),
                                       SizedBox(
                                         height: 12,
                                       ),
                                       Text(
-                                       "Rating: "+ moviesData["results"][index]['vote_average'].toString(),
+                                        "Rating: " +
+                                            moviesData["results"][index]
+                                                    ['vote_average']
+                                                .toString(),
                                         style: TextStyle(
                                           wordSpacing: 4,
                                           color: Colors.grey,
@@ -211,7 +262,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                         )
                                       ]),
                                   child: Hero(
-                                    tag:tvData["results"][index]['backdrop_path']!=null?tvData["results"][index]['backdrop_path']:tag++,
+                                    tag: tvData["results"][index]
+                                                ['backdrop_path'] !=
+                                            null
+                                        ? tvData["results"][index]
+                                            ['backdrop_path']
+                                        : tag++,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: GestureDetector(
@@ -219,12 +275,23 @@ class _SearchScreenState extends State<SearchScreen> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => MovieScreen(movie: tvData['results'][index],genres: widget.genres,)),
+                                                builder: (context) =>
+                                                    MovieScreen(
+                                                      movie: tvData['results']
+                                                          [index],
+                                                      genres: widget.genres,
+                                                    )),
                                           );
                                         },
                                         child: Image(
                                           image: NetworkImage(
-                                              "https://image.tmdb.org/t/p/original"+(tvData["results"][index]['poster_path']!=null?tvData["results"][index]['poster_path']:"")),
+                                              "https://image.tmdb.org/t/p/original" +
+                                                  (tvData["results"][index]
+                                                              ['poster_path'] !=
+                                                          null
+                                                      ? tvData["results"][index]
+                                                          ['poster_path']
+                                                      : "")),
                                           height: 150,
                                           width: 100,
                                           fit: BoxFit.cover,
@@ -238,12 +305,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        tvData["results"][index]['title'] != null
-                                            ? tvData["results"][index]['title'].toUpperCase()
-                                            : tvData["results"][index]['name'].toUpperCase(),
+                                        tvData["results"][index]['title'] !=
+                                                null
+                                            ? tvData["results"][index]['title']
+                                                .toUpperCase()
+                                            : tvData["results"][index]['name']
+                                                .toUpperCase(),
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 15,
@@ -254,7 +325,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                         height: 12,
                                       ),
                                       Text(
-                                        "Rating: "+ tvData["results"][index]['vote_average'].toString(),
+                                        "Rating: " +
+                                            tvData["results"][index]
+                                                    ['vote_average']
+                                                .toString(),
                                         style: TextStyle(
                                           wordSpacing: 4,
                                           color: Colors.grey,
