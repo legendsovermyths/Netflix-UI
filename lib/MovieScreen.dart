@@ -198,7 +198,7 @@ class _MovieScreenState extends State<MovieScreen> {
                           height: 2.0,
                         ),
                         Text(
-                          widget.movie["origin_country"].toString().substring(1,3),
+                          widget.movie["origin_country"].toString()!="[]"?widget.movie["origin_country"].toString().substring(1,3):"NaN",
                           style: TextStyle(
                               fontSize: 20.0, fontWeight: FontWeight.w600),
                         )
