@@ -73,5 +73,18 @@ class Model{
     var data=await networking2.getdata();
     return data;
   }
+  Future<dynamic> getPopularMovies () async{
+    String url="https://api.themoviedb.org/3/movie/popular?api_key=$API&language=en-US&page=1";
+    Networking networking2=Networking(url: url);
+    var data=await networking2.getdata();
+    return data;
+  }
+  Future<dynamic> getPopularTV () async{
+    String url="https://api.themoviedb.org/3/tv/popular?api_key=$API&language=en-US&page=1";
+    Networking networking2=Networking(url: url);
+    var data=await networking2.getdata();
+    return data;
+  }
+
 
 }

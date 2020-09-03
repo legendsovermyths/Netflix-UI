@@ -9,7 +9,8 @@ class HomePage extends StatefulWidget {
   final data;
   final listImages;
   final listImages2;
-  HomePage({this.data, this.listImages,this.genres,this.listImages2,this.listMovies});
+  final listTV;
+  HomePage({this.data, this.listImages,this.genres,this.listImages2,this.listMovies,this.listTV});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -130,7 +131,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SearchScreen(genres:widget.genres,movies: widget.listMovies,)),
+                MaterialPageRoute(builder: (context) => SearchScreen(genres:widget.genres,movies: widget.listMovies,TV: widget.listTV,)),
               );
             },
             icon: Icon(Icons.search),

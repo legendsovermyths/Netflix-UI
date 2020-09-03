@@ -4,9 +4,10 @@ import 'package:netflix_ui/SearchList.dart';
 import 'DataModel.dart';
 
 class SearchScreen extends StatefulWidget {
+  final TV;
   final movies;
   final genres;
-  SearchScreen({this.genres, this.movies});
+  SearchScreen({this.genres, this.movies,this.TV});
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -19,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void updateUI(data,data_2) {
     setState(() {
       moviesData = data;
-      tvData = data;
+      tvData = data_2;
     });
   }
 
@@ -27,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    updateUI(widget.movies,widget.movies);
+    updateUI(widget.movies,widget.TV);
   }
 
   @override
@@ -48,15 +49,24 @@ class _SearchScreenState extends State<SearchScreen> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () async{
-                  Model model = Model(query: myController.text);
-                  var data = await model.getSearchedMovies();
-                  var data_2 = await model.getSearchedTV();
-                  print(data);
-                  updateUI(data,data_2);
-                  FocusScopeNode currentFocus = FocusScope.of(context);
+                  if(myController.text!="") {
+                    Model model = Model(query: myController.text);
+                    var data = await model.getSearchedMovies();
+                    var data_2 = await model.getSearchedTV();
+                    print(data);
+                    updateUI(data, data_2);
+                    FocusScopeNode currentFocus = FocusScope.of(context);
 
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  }
+                  else{
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
                   }
 
                 },
@@ -69,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
             title: TextField(
               controller: myController,
               decoration: InputDecoration(
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 filled: true,
                 hintText: "Search",
                 hintStyle: TextStyle(color: Colors.blueGrey),
